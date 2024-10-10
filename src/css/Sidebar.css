@@ -1,9 +1,11 @@
-/* src/components/Sidebar.css */
 .sidebar {
     width: 200px;
     padding: 20px;
     background-color: #f4f4f4;
     height: 100vh;
+    overflow-y: auto;
+    position: sticky;
+    top: 0;
 }
 
 .sidebar h2 {

@@ -5,7 +5,7 @@ import Sidebar from './components/Sidebar';
 import Traffic from './components/Traffic';
 import Stock from './components/Stock';
 import Weather from './components/Weather';
-import './App.css';
+import './css/App.css';
 
 const App = () => {
     return (
