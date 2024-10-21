@@ -44,4 +44,6 @@
     background-color: #66B366; /* 진한 초록색으로 변경 */
     color: #ffffff !important;/* 마우스 오버 시 글씨 색상 흰색으로 변경 */
     box-shadow: 2px 2px 10px rgba(0, 100, 0, 0.4); /* 마우스 오버 시 그림자 효과 수정 */
+    transform: scaleX(1.2); /* 가로로 1.1배 확장 */
+
 }
