@@ -1,7 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import "../css/LoginPage.css";
 
 const LoginPage = () => {
+    const [userId, setUserId] = useState("");
+    const [password, setPassword] = useState("");
+
+    const loginSubmit = async (e) => {
+        e.preventDefault();
+
+        // 비밀번호 간단한 암호화 (Base64 인코딩, 실제 환경에서는 더 안전한 방식 사용 필요)
+        const encryptedPassword = password;
+
+        try {
+            const response = await axios.post("/user/login", {
+                userId,
+                encryptedPassword
+            });
+            alert("로그인 성공!");
+            console.log(response.data);
+        } catch (error) {
+            alert("로그인 실패. 아이디와 비밀번호를 확인하세요.");
+            console.error("로그인 오류:", error);
+        }
+    }
+
     return (
         <div className="login-container">
             <div className="login-left">
@@ -17,11 +40,17 @@ const LoginPage = () => {
                     <p className="login-subtitle">
                         Login with the data you entered during your registration.
                     </p>
-                    <form>
-                        <label>Email</label>
-                        <input type="email" placeholder="john.doe@gmail.com" required />
+                    <form onSubmit={loginSubmit}>
+                        <label>Id</label>
+                        <input type="email" placeholder="Id or Email Address"
+                               value={userId}
+                               onChange={(e) => setUserId(e.target.value)}
+                               required />
                         <label>Password</label>
-                        <input type="password" placeholder="********" required />
+                        <input type="password" placeholder="********"
+                               value={password}
+                               onChange={(e) => setPassword(e.target.value)}
+                               required />
                         <button type="submit" className="login-button">
                             Log in
                         </button>

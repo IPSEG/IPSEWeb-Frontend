@@ -5,29 +5,32 @@ import Traffic from './components/Traffic';
 import Stock from './components/Stock';
 import Weather from './components/Weather';
 import LoginPage from './components/LoginPage';
+import AuthCheck from './components/AuthCheck'; // HOC 불러오기
 import './css/App.css';
 
 const App = () => {
     return (
         <Router>
             <Routes>
-                {/* 로그인 페이지 */}
+                {/* 로그인 페이지는 항상 접근 가능 */}
                 <Route path="/" element={<LoginPage />} />
 
-                {/* 로그인 후 다른 페이지 */}
+                {/* 로그인 후 접근 가능 */}
                 <Route
-                    path="/*"
+                    path="/main"
                     element={
-                        <div className="app">
-                            <Sidebar />
-                            <div className="content">
-                                <Routes>
-                                    <Route path="/Traffic" element={<Traffic />} />
-                                    <Route path="/Stock" element={<Stock />} />
-                                    <Route path="/Weather" element={<Weather />} />
-                                </Routes>
+                        <AuthCheck>
+                            <div className="app">
+                                <Sidebar />
+                                <div className="content">
+                                    <Routes>
+                                        <Route path="/Traffic" element={<Traffic />} />
+                                        <Route path="/Stock" element={<Stock />} />
+                                        <Route path="/Weather" element={<Weather />} />
+                                    </Routes>
+                                </div>
                             </div>
-                        </div>
+                        </AuthCheck>
                     }
                 />
             </Routes>
