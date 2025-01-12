@@ -1,27 +1,36 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import "../css/LoginPage.css";
+import {encryptPassword} from "./RsaService";
 
 const LoginPage = () => {
     const [userId, setUserId] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate(); // ✅ 훅을 컴포넌트 최상단에 선언
 
     const loginSubmit = async (e) => {
         e.preventDefault();
 
-        // 비밀번호 간단한 암호화 (Base64 인코딩, 실제 환경에서는 더 안전한 방식 사용 필요)
-        const encryptedPassword = password;
-
         try {
-            const response = await axios.post("/user/login", {
+            const rsaResponse = await axios.get("/rsa");
+            const modulus = rsaResponse.data.modulus;
+            const exponent = rsaResponse.data.exponent;
+            const randomString = rsaResponse.data.randomString;
+            const encryptedPassword = encryptPassword(password, modulus, exponent);
+
+            const loginResponse = await axios.post("/user/login", {
                 userId,
-                encryptedPassword
+                encryptedPassword,
+                randomString
             });
-            alert("로그인 성공!");
-            console.log(response.data);
+            alert("로그인 성공! : ", loginResponse.data.accessToken);
+            sessionStorage.setItem("accessToken", loginResponse.data.accessToken);
+            console.log(loginResponse.data);
+            navigate('/main')
         } catch (error) {
             alert("로그인 실패. 아이디와 비밀번호를 확인하세요.");
-            console.error("로그인 오류:", error);
+            console.error("로그인 오류 : ", error);
         }
     }
 
@@ -42,7 +51,7 @@ const LoginPage = () => {
                     </p>
                     <form onSubmit={loginSubmit}>
                         <label>Id</label>
-                        <input type="email" placeholder="Id or Email Address"
+                        <input type="id" placeholder="Id or Email Address"
                                value={userId}
                                onChange={(e) => setUserId(e.target.value)}
                                required />
