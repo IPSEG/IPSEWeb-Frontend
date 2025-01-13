@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Card from '../Card';
-import '../../css/Traffic.css';
+import Card from './Card';
+import '../css/Traffic.css';
 
 const Traffic = () => {
     const [cards, setCards] = useState([]); // cards 상태를 빈 배열로 초기화

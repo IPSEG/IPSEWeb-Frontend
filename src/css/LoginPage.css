@@ -7,7 +7,7 @@
 
 /* 왼쪽 이미지 영역 */
 .login-left {
-    flex: 0.5;
+    flex: 0.4;
     width: 100%;
     background-color: #f5f5f5;
 }
