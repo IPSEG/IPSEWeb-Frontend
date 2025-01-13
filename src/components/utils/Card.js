@@ -1,5 +1,5 @@
 import React from 'react';
-import '../css/Card.css';
+import '../../css/Card.css';
 // 카드 컴포넌트
 const Card = ({ id, content }) => {
     return (
