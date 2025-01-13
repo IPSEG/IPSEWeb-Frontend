@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import "../css/LoginPage.css";
-import {encryptPassword} from "./RsaService";
+import "../../css/LoginPage.css";
+import {encryptPassword} from "../utils/RsaService";
 
 const LoginPage = () => {
     const [userId, setUserId] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate(); // ✅ 훅을 컴포넌트 최상단에 선언
+    const navigate = useNavigate(); // 훅을 컴포넌트 최상단에 선언
 
     const loginSubmit = async (e) => {
         e.preventDefault();
@@ -24,9 +24,7 @@ const LoginPage = () => {
                 encryptedPassword,
                 randomString
             });
-            alert("로그인 성공! : ", loginResponse.data.accessToken);
             sessionStorage.setItem("accessToken", loginResponse.data.accessToken);
-            console.log(loginResponse.data);
             navigate('/main')
         } catch (error) {
             alert("로그인 실패. 아이디와 비밀번호를 확인하세요.");
@@ -34,11 +32,15 @@ const LoginPage = () => {
         }
     }
 
+    const signUp = () => {
+        navigate('/SignUp');  // 클릭 시 페이지 이동
+    };
+
     return (
         <div className="login-container">
             <div className="login-left">
                 <img
-                    src="/img/loginpage.jpg" // 배경 이미지 대체 URL
+                    src="/img/loginpage.jpg" // 배경 이미지 URL
                     alt="Background"
                     className="login-image"
                 />
@@ -63,12 +65,11 @@ const LoginPage = () => {
                         <button type="submit" className="login-button">
                             Log in
                         </button>
-                        <p className="forgot-password">Did you forget your password?</p>
+                        <p className="forgot-password">비밀번호 찾기</p>
                     </form>
                     <div className="signup-section">
                         <h2>Sign up</h2>
-                        <p>Login with the data you entered during your registration.</p>
-                        <button className="signup-button">Create account</button>
+                        <button className="signup-button" onClick={signUp}>Create account</button>
                     </div>
                 </div>
                 <footer className="login-footer">
