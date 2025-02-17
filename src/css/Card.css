@@ -1,9 +1,26 @@
 
 .card {
     width: 98%;
-    padding: 20px;
+    padding: 10px;
+    padding-bottom: 6px;
     margin: 10px 0;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.card h2 {
+    margin: 10px 0;
+    margin-bottom: 16px;
+}
+
+.card .arrival-item h4 {
+    margin: 10px 0;
+    margin-left: 3px;
+}
+
+.card .arrival-item p {
+    margin: 10px 0;
+    margin-left: 3px;
+}
+

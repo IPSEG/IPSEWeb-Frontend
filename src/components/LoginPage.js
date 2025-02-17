@@ -3,11 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import "../css/LoginPage.css";
 import {encryptPassword} from "./RsaService";
+import { useAuth } from "./AuthContext";
+
 
 const LoginPage = () => {
     const [userId, setUserId] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate(); // ✅ 훅을 컴포넌트 최상단에 선언
+    const { setId } = useAuth();
 
     const loginSubmit = async (e) => {
         e.preventDefault();
@@ -27,6 +30,7 @@ const LoginPage = () => {
             alert("로그인 성공! : ", loginResponse.data.accessToken);
             sessionStorage.setItem("accessToken", loginResponse.data.accessToken);
             console.log(loginResponse.data);
+            setId(userId);
             navigate('/main')
         } catch (error) {
             alert("로그인 실패. 아이디와 비밀번호를 확인하세요.");

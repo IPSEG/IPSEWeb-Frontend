@@ -9,13 +9,13 @@ const Sidebar = () => {
             <h2>Menu</h2>
             <ul>
                 <li>
-                    <Link to="/Traffic" className="sidebar-link">Traffic</Link>
+                    <Link to="/main/Traffic" className="sidebar-link">Traffic</Link>
                 </li>
                 <li>
-                    <Link to="/Stock" className="sidebar-link">Stock</Link>
+                    <Link to="/main/Stock" className="sidebar-link">Stock</Link>
                 </li>
                 <li>
-                    <Link to="/Weather" className="sidebar-link">Weather</Link>
+                    <Link to="/main/Weather" className="sidebar-link">Weather</Link>
                 </li>
             </ul>
         </div>
