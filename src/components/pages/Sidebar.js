@@ -1,7 +1,7 @@
 // src/components/Sidebar.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../css/Sidebar.css';
+import '../../css/Sidebar.css';
 
 const Sidebar = () => {
     return (
@@ -9,13 +9,13 @@ const Sidebar = () => {
             <h2>Menu</h2>
             <ul>
                 <li>
-                    <Link to="/Traffic" className="sidebar-link">Traffic</Link>
+                    <Link to="/src/components/pages/Traffic" className="sidebar-link">Traffic</Link>
                 </li>
                 <li>
-                    <Link to="/Stock" className="sidebar-link">Stock</Link>
+                    <Link to="/src/components/pages/Stock" className="sidebar-link">Stock</Link>
                 </li>
                 <li>
-                    <Link to="/Weather" className="sidebar-link">Weather</Link>
+                    <Link to="/src/components/pages/Weather" className="sidebar-link">Weather</Link>
                 </li>
             </ul>
         </div>
