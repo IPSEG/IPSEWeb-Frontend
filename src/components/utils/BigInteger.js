@@ -1,7 +1,9 @@
 export class BigInteger {
     constructor(value, radix) {
+        /* eslint-disable no-undef */
         this.value =
             typeof value === 'string' ? BigInt(`0x${value}`) : BigInt(value);
+        /* eslint-enable no-undef */
     }
 
     modPowInt(exp, mod) {

@@ -8,7 +8,7 @@ import LoginPage from './components/pages/LoginPage';
 import AuthCheck from './components/utils/AuthCheck';
 import SignUp from './components/pages/SignUp';
 import './css/App.css';
-import {AuthProvider} from "./components/AuthContext";
+import {AuthProvider} from "./components/utils/AuthContext";
 
 const App = () => {
     return (

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../utils/AuthContext";
 import axios from "axios";
-import Card from './Card';
-import '../css/Traffic.css';
+import Card from '../utils/Card';
+import '../../css/Traffic.css';
 
 const Traffic = () => {
     const [cards, setCards] = useState([]); // cards 상태를 빈 배열로 초기화
@@ -15,8 +15,9 @@ const Traffic = () => {
         const fetchInitialData = async () => {
             try {
 
+
                 const defaultStation = "서울"; // 기본 지하철역 설정
-                const subwayResponse = await axios.get(`/api/traffic/subway-arrival/v1?name=${defaultStation}`);
+                const subwayResponse = await axios.get(`/api/traffic/card/v1?userId=user001`);
                 const realtimeArrivalList = subwayResponse.data?.data?.realtimeArrivalList;
 
                 if (!realtimeArrivalList || realtimeArrivalList.length === 0) {
@@ -47,6 +48,7 @@ const Traffic = () => {
             const cardAddResponse = await axios.post("/api/traffic/card/v1/add",{
                 userId: id,
                 stationName: inputValue,
+                cardType: "SUBWAY",
             });
 
 

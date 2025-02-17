@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import "../css/LoginPage.css";
-import {encryptPassword} from "./RsaService";
-import { useAuth } from "./AuthContext";
+import "../../css/LoginPage.css";
+import {encryptPassword} from "../utils/RsaService";
+import { useAuth } from "../utils/AuthContext";
 
 
 const LoginPage = () => {
