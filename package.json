@@ -21,6 +21,16 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2020": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2020
+    },
+    "rules": {
+      "no-undef": "off"
+    },
     "extends": [
       "react-app",
       "react-app/jest"
