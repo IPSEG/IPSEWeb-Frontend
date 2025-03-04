@@ -8,6 +8,7 @@ import LoginPage from './components/pages/LoginPage';
 import AuthCheck from './components/utils/AuthCheck';
 import SignUp from './components/pages/SignUp';
 import './css/App.css';
+import BusStop from "./components/pages/bus/BusStop.tsx";
 
 const App = () => {
     return (
@@ -30,6 +31,7 @@ const App = () => {
                                         <Route path="/Traffic" element={<Traffic />} />
                                         <Route path="/Stock" element={<Stock />} />
                                         <Route path="/Weather" element={<Weather />} />
+                                        <Route path="/busstop" element={<BusStop />}/>
                                     </Routes>
                                 </div>
                             </div>
