@@ -1,8 +1,8 @@
 import {useForm, useWatch} from "react-hook-form";
-import {useQuery} from "react-query";
+import {useQuery, useInfiniteQuery} from "react-query";
 // @ts-ignore
 import {fetchBusStopListByNameOrId} from "../../../api/api.ts";
-import {useMemo} from "react";
+import {useEffect, useMemo, useRef} from "react";
 // @ts-ignore
 import {BusStopBottomRow, BusStopInfo, BusStopLocation, BusStopName, BusStopTopRow, Wrapper} from "../../../css/bus/BusStop.styles.ts";
 
@@ -21,23 +21,58 @@ interface IBusStopList {
 }
 
 
+interface IBusStopPageData {
+    bus_stop_list : IBusStopList[],
+    has_next : boolean,
+    has_previous : boolean,
+    page_count : number,
+    current_page_number: number;
+}
+
+
 function BusStop() {
     const {control, handleSubmit} = useForm<IForm>();
 
     const search = useWatch({control, name: "busStopNameOrId"});
 
-    const {data, isLoading} = useQuery<IBusStopList[]>({
-            queryKey: ["search", search],
-            queryFn: () => fetchBusStopListByNameOrId(search),
-            enabled: !!search,
-        }
-    );
+    const {
+        data,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+    } = useInfiniteQuery({
+        queryKey: ["search", search],
+        queryFn: ({ pageParam = 0 }) => fetchBusStopListByNameOrId(search, pageParam),
+        initialPageParam: 0,
+        getNextPageParam: (lastPage : IBusStopPageData, allPages: IBusStopPageData[]) => {
+            return lastPage.has_next ? lastPage.current_page_number + 1 : undefined;
+        },
+        enabled: !!search,
+    });
+
+    const observerRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && hasNextPage) {
+                    fetchNextPage();
+                }
+            },
+            { threshold: 1 }
+        );
+
+        if (observerRef.current) observer.observe(observerRef.current);
+
+        return () => observer.disconnect();
+    }, [hasNextPage, fetchNextPage]);
 
     const groupedData = useMemo(() => {
 
-        if (!data) return {}; // 데이터가 없으면 빈 객체 반환
 
-        return data.reduce<Record<string, IBusStopList[]>>((acc, busStop) => {
+        if (!data) return {};
+
+        return data.pages.flatMap((page) => page.bus_stop_list).reduce<Record<string, IBusStopList[]>>((acc, busStop : IBusStopList) => {
             if (!acc[busStop.city]) {
                 acc[busStop.city] = [];
             }
@@ -55,7 +90,7 @@ function BusStop() {
                 <input {...control.register("busStopNameOrId")} type="text" placeholder="정류장, 정류장 번호(ID) 검색"/>
             </form>
 
-            {isLoading ? <p>Loading....</p> : (
+            { (
                 Object.entries(groupedData).map(([city, busStops]) => (
                     <div key={city}>
                         <BusStopLocation>{city}</BusStopLocation>
@@ -73,6 +108,12 @@ function BusStop() {
                 ))
             )
             }
+
+            {/* 로딩 중일 때 표시 */}
+            {isFetchingNextPage && <p>Loading more...</p>}
+
+            {/* 마지막 요소 (Intersection Observer 대상) */}
+            <div ref={observerRef} style={{ height: "10px" }} />
 
         </Wrapper>
 
