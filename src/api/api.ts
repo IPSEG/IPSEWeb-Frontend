@@ -1,7 +1,6 @@
 const BASE_URL = `http://localhost`;
 const WEB_PORT = `8080`;
-const VERSION_1 = `v1`;
-const BASE_TRAFFIC = `api/traffic`;
+const BASE_TRAFFIC_VERSION_1 = `api/v1/traffic`;
 
 const TEST_URL = `https://my-json-server.typicode.com/IPSEG/IPSEWeb-Frontend-DB`;
 const TEST: boolean = false;
@@ -22,10 +21,10 @@ async function fetchData(url: string) {
     }
 }
 
-export async function fetchBusStopListByNameOrId(busStopNameOrId: string) {
+export async function fetchBusStopListByNameOrId(busStopNameOrId: string, pageNumber : number) {
 
     const url: string = TEST ? `${TEST_URL}/busstop` :
-        `${BASE_URL}:${WEB_PORT}/${BASE_TRAFFIC}/bus-stop/${VERSION_1}?busStopName=${busStopNameOrId}`;
+        `${BASE_URL}:${WEB_PORT}/${BASE_TRAFFIC_VERSION_1}/bus-stop?pageNumber=${pageNumber}&busStopName=${busStopNameOrId}`;
 
     return await fetchData(url);
 }
