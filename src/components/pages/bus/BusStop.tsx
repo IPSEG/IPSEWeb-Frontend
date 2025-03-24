@@ -1,33 +1,22 @@
+// @ts-ignore
 import {useForm, useWatch} from "react-hook-form";
-import {useQuery, useInfiniteQuery} from "react-query";
+
 // @ts-ignore
 import {fetchBusStopListByNameOrId} from "../../../api/api.ts";
-import {useEffect, useMemo, useRef} from "react";
 // @ts-ignore
-import {BusStopBottomRow, BusStopInfo, BusStopLocation, BusStopName, BusStopTopRow, Wrapper} from "../../../css/bus/BusStop.styles.ts";
-
-
-interface IForm {
-    busStopNameOrId: string
-}
-
-
-interface IBusStopList {
-    bus_stop_id: string,
-    bus_stop_name: string,
-    city_code: string,
-    city: string,
-    detail_city: string
-}
-
-
-interface IBusStopPageData {
-    bus_stop_list : IBusStopList[],
-    has_next : boolean,
-    has_previous : boolean,
-    page_count : number,
-    current_page_number: number;
-}
+import React, {useEffect, useMemo, useRef} from "react";
+// @ts-ignore
+import {
+    BusStopBottomRow,
+    BusStopInfo,
+    BusStopLocation,
+    BusStopName,
+    BusStopTopRow, StyledLink,
+    Wrapper
+} from "../../../css/bus/BusStop.styles.ts";
+// @ts-ignore
+import {IBusStopList, IBusStopPageData, IForm} from "../../../type/bus/Bus.ts";
+import {useInfiniteQuery} from "@tanstack/react-query";
 
 
 function BusStop() {
@@ -42,9 +31,9 @@ function BusStop() {
         isFetchingNextPage,
     } = useInfiniteQuery({
         queryKey: ["search", search],
-        queryFn: ({ pageParam = 0 }) => fetchBusStopListByNameOrId(search, pageParam),
+        queryFn: ({pageParam = 0}) => fetchBusStopListByNameOrId(search, pageParam),
         initialPageParam: 0,
-        getNextPageParam: (lastPage : IBusStopPageData, allPages: IBusStopPageData[]) => {
+        getNextPageParam: (lastPage: IBusStopPageData, allPages: IBusStopPageData[]) => {
             return lastPage.has_next ? lastPage.current_page_number + 1 : undefined;
         },
         enabled: !!search,
@@ -59,7 +48,7 @@ function BusStop() {
                     fetchNextPage();
                 }
             },
-            { threshold: 1 }
+            {threshold: 1}
         );
 
         if (observerRef.current) observer.observe(observerRef.current);
@@ -69,10 +58,9 @@ function BusStop() {
 
     const groupedData = useMemo(() => {
 
-
         if (!data) return {};
 
-        return data.pages.flatMap((page) => page.bus_stop_list).reduce<Record<string, IBusStopList[]>>((acc, busStop : IBusStopList) => {
+        return data.pages.flatMap((page) => page.bus_stop_list).reduce<Record<string, IBusStopList[]>>((acc, busStop: IBusStopList) => {
             if (!acc[busStop.city]) {
                 acc[busStop.city] = [];
             }
@@ -90,18 +78,20 @@ function BusStop() {
                 <input {...control.register("busStopNameOrId")} type="text" placeholder="정류장, 정류장 번호(ID) 검색"/>
             </form>
 
-            { (
+            {(
                 Object.entries(groupedData).map(([city, busStops]) => (
                     <div key={city}>
                         <BusStopLocation>{city}</BusStopLocation>
                         <ul>
                             {busStops.slice(0, 10).map((busStop) => (
-                                <BusStopInfo key={busStop.bus_stop_id}>
-                                    <BusStopTopRow>
-                                        <BusStopName>{busStop.bus_stop_name}</BusStopName>
-                                    </BusStopTopRow>
-                                    <BusStopBottomRow>{busStop.bus_stop_id}</BusStopBottomRow>
-                                </BusStopInfo>
+                                <StyledLink to={`${busStop.city_code}/${busStop.bus_stop_id}`} state={busStop}>
+                                    <BusStopInfo key={busStop.bus_stop_id}>
+                                        <BusStopTopRow>
+                                            <BusStopName>{busStop.bus_stop_name}</BusStopName>
+                                        </BusStopTopRow>
+                                        <BusStopBottomRow>{busStop.bus_stop_id}</BusStopBottomRow>
+                                    </BusStopInfo>
+                                </StyledLink>
                             ))}
                         </ul>
                     </div>
@@ -113,7 +103,7 @@ function BusStop() {
             {isFetchingNextPage && <p>Loading more...</p>}
 
             {/* 마지막 요소 (Intersection Observer 대상) */}
-            <div ref={observerRef} style={{ height: "10px" }} />
+            <div ref={observerRef} style={{height: "10px"}}/>
 
         </Wrapper>
 
