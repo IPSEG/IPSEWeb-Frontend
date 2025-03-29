@@ -21,29 +21,30 @@ const App = () => {
                 <Route path="/SignUp" element={<SignUp />} />
 
                 {/* 로그인 후 접근 가능 */}
-                {/*<Route*/}
-                {/*    path="/main"*/}
-                {/*    element={*/}
-                {/*        <AuthCheck>*/}
-                {/*            <div className="app">*/}
-                {/*                <Sidebar />*/}
-                {/*                <div className="content">*/}
-                {/*                    <Routes>*/}
-                {/*                        <Route path="/Traffic" element={<Traffic />} />*/}
-                {/*                        <Route path="/Stock" element={<Stock />} />*/}
-                {/*                        <Route path="/Weather" element={<Weather />} />*/}
-                {/*                        <Route path="/busstop" element={<BusStop />}/>*/}
-                {/*                    </Routes>*/}
-                {/*                </div>*/}
-                {/*            </div>*/}
-                {/*        </AuthCheck>*/}
-                {/*    }*/}
-                {/*/>*/}
-                <Route path="/Traffic" element={<Traffic />} />
-                <Route path="/Stock" element={<Stock />} />
-                <Route path="/Weather" element={<Weather />} />
-                <Route path="/busstop" element={<BusStop />}/>
-                <Route path="/busstop/:cityCode/:busStopId"  element={<BusArrival/>}/>
+                <Route
+                    path="/main"
+                    element={
+                        <AuthCheck>
+                            <div className="app">
+                                <Sidebar />
+                                <div className="content">
+                                    <Routes>
+                                        <Route path="/Traffic" element={<Traffic />} />
+                                        <Route path="/Stock" element={<Stock />} />
+                                        <Route path="/Weather" element={<Weather />} />
+                                        <Route path="/busstop" element={<BusStop />}/>
+                                        <Route path="/busstop/:cityCode/:busStopId"  element={<BusArrival/>}/>
+                                    </Routes>
+                                </div>
+                            </div>
+                        </AuthCheck>
+                    }
+                />
+                {/*<Route path="/Traffic" element={<Traffic />} />*/}
+                {/*<Route path="/Stock" element={<Stock />} />*/}
+                {/*<Route path="/Weather" element={<Weather />} />*/}
+                {/*<Route path="/busstop" element={<BusStop />}/>*/}
+                {/*<Route path="/busstop/:cityCode/:busStopId"  element={<BusArrival/>}/>*/}
             </Routes>
         </Router>
     );
