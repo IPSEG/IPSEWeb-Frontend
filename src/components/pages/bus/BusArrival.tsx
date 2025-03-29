@@ -1,4 +1,4 @@
-import {useLocation, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 // @ts-ignore
 import React, {useEffect, useMemo, useState} from "react";
 
@@ -6,10 +6,10 @@ import React, {useEffect, useMemo, useState} from "react";
 import {fetchBusArriveInfoByBusStopId, fetchBusRouteBasicInfoByCityCodeAndRouteId} from "../../../api/api.ts";
 // @ts-ignore
 import {
-    ArrivalInfo,
+    ArrivalInfo, BackButton,
     BusInfoContainer,
     BusListContainer, BusNumber,
-    BusStopContainer, BusStopId, BusStopIdAndNameContainer, BusStopName,
+    BusStopContainer, BusStopId, BusStopIdAndNameContainer, BusStopName, BusTypeTag,
     Container, Divider, RegionTag, RouteInfo,
     Title
 } from "../../../css/bus/BusArrival.styles.ts";
@@ -29,6 +29,7 @@ function BusArrival() {
     const {cityCode, busStopId} = useParams<RouteParams>();
     const location = useLocation();
     const state: { busStop: IBusStopList } | null = location.state as { busStop: IBusStopList } | null;
+    const navigate = useNavigate();
 
     const {isLoading: isLoadingBusArrival, data: busArrivalData} = useQuery<BusArrivalData[]>({
             queryKey: ["busArrivalData"],
@@ -37,14 +38,20 @@ function BusArrival() {
     )
 
     // busArrivalData가 로드되었을 때만 useQueries를 호출하도록 변경
+
+    const memoizedQueries = useMemo(() => {
+        if (!busArrivalData) return [];
+
+        return busArrivalData.map((busArrival) => ({
+            queryKey: ["busRouteBasicInfo", cityCode, busArrival.route_id], // cityCode 포함
+            queryFn: () =>
+                fetchBusRouteBasicInfoByCityCodeAndRouteId(cityCode, busArrival.route_id),
+            staleTime: 1000 * 60 * 5, // 5분간 fresh 상태
+        }));
+    }, [busArrivalData, cityCode]);
+
     const busRouteBasicInfoQueries = useQueries({
-        queries: busArrivalData
-            ? busArrivalData.map((busArrival) => ({
-                queryKey: ["busRouteBasicInfo", busArrival.route_id],
-                queryFn: () =>
-                    fetchBusRouteBasicInfoByCityCodeAndRouteId(cityCode, busArrival.route_id),
-            }))
-            : [], // busArrivalData가 없을 경우 빈 배열을 넘겨줍니다.
+        queries: memoizedQueries,
     });
 
     const isLoadingBusRouteBasicInfo = busRouteBasicInfoQueries.every(query => query.isLoading);
@@ -54,28 +61,16 @@ function BusArrival() {
         .filter((data): data is BusRouteBasicInfo => data !== undefined);
 
     useEffect(() => {
-        console.log("busRouteBasicInfo updated : ", busRouteBasicInfo)
+        // console.log("busRouteBasicInfo updated : ", busRouteBasicInfo)
     }, [busRouteBasicInfo])
 
-    // const [busArrivalMap, setBusArrivalMap] = useState<Map<number, BusArrivalData>>(new Map());
-
-    // useEffect(() => {
-    //     if (busArrivalData) {
-    //         const newMap = new Map<number, BusArrivalData>();
-    //         busArrivalData.forEach((bus) => newMap.set(bus.route_no, bus));
-    //
-    //         console.log(newMap);
-    //         setBusArrivalMap(newMap);
-    //
-    //     }
-    // }, [busArrivalData]); // busArrivalData 변경 시 실행
     const busArrivalMap = useMemo(() => {
         if (!busArrivalData) return new Map<number, BusArrivalData>();
 
         const newMap = new Map<number, BusArrivalData>();
         busArrivalData.forEach((bus) => newMap.set(bus.route_no, bus));
 
-        console.log(newMap);
+        // console.log(newMap);
 
         return newMap;
     }, [busArrivalData]);
@@ -85,6 +80,7 @@ function BusArrival() {
         <Container>
             <BusStopContainer>
                 <BusStopIdAndNameContainer>
+                    <BackButton onClick={() => navigate(-1)}>←</BackButton>
                     <BusStopName>{state.bus_stop_name}</BusStopName>
                     (<BusStopId>{busStopId}</BusStopId>)
                 </BusStopIdAndNameContainer>
@@ -102,17 +98,28 @@ function BusArrival() {
                     ) :
                     (
                         <BusListContainer>
-                            {busRouteBasicInfo.map((busRoute)=> (
+                            {busRouteBasicInfo.map((busRoute) => (
                                 <BusInfoContainer key={busRoute.route_id}>
                                     <div>
                                         <BusNumber>{busRoute.route_no}</BusNumber>
                                         <RegionTag>{state.city}</RegionTag>
+                                        {(() => {
+                                            const busArrival = busArrivalMap.get(String(busRoute.route_no));
+                                            return busArrival?.route_type ? (
+                                                <BusTypeTag isExpress={busArrival.route_type === "급행버스"}>
+                                                    {busArrival.route_type}
+                                                </BusTypeTag>
+                                            ) : null;
+                                        })()}
                                         <RouteInfo>{busRoute.end_node_name} 방면</RouteInfo>
                                     </div>
                                     <ArrivalInfo>
                                         {(() => {
-                                            console.log(`Route No: ${busRoute.route_no}, Arrival Time:`, busArrivalMap.get(busRoute.route_no));
-                                            return "정보 없음";
+                                            const busArrival = busArrivalMap.get(String(busRoute.route_no));
+                                            if (!busArrival) return "정보 없음";
+
+                                            const arrive_minutes = Math.floor(Number(busArrival.arrive_seconds) / 60);
+                                            return `${arrive_minutes.toFixed(0)}분 후 도착`;
                                         })()}
                                     </ArrivalInfo>
                                 </BusInfoContainer>

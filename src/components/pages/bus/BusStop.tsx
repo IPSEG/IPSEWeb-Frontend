@@ -17,10 +17,16 @@ import {
 // @ts-ignore
 import {IBusStopList, IBusStopPageData, IForm} from "../../../type/bus/Bus.ts";
 import {useInfiniteQuery} from "@tanstack/react-query";
+import {useSearchParams} from "react-router-dom";
 
 
 function BusStop() {
-    const {control, handleSubmit} = useForm<IForm>();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const defaultSearch = searchParams.get("q") || "";
+
+    const {control, handleSubmit, register, setValue} = useForm<IForm>({
+        defaultValues: { busStopNameOrId: defaultSearch}
+    });
 
     const search = useWatch({control, name: "busStopNameOrId"});
 
@@ -72,8 +78,8 @@ function BusStop() {
 
     return (
         <Wrapper>
-            <form onChange={handleSubmit(() => {
-                console.log(data)
+            <form onChange={handleSubmit((values) => {
+                setSearchParams({q: values.busStopNameOrId});
             })}>
                 <input {...control.register("busStopNameOrId")} type="text" placeholder="정류장, 정류장 번호(ID) 검색"/>
             </form>

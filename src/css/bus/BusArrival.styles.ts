@@ -82,6 +82,20 @@ export const RegionTag = styled.span`
   margin-left: 5px;
 `;
 
+export const BusTypeTag = styled.span<{ isExpress: boolean }>`
+    background-color: ${(props) => (props.isExpress ? "#ff4d4d" : "#ffcc00")};
+    /* 급행이면 빨간색(#ff4d4d), 아니면 노란색(#ffcc00) */
+    color: #fff; /* 흰색 글씨 */
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 6px;
+    border-radius: 8px;
+    margin-left: 6px; /* RegionTag와 간격 조정 */
+    display: inline-block;
+    min-width: 40px;
+    text-align: center;
+`;
+
 export const RouteInfo = styled.div`
   font-size: 14px;
   color: #444;
@@ -90,4 +104,12 @@ export const RouteInfo = styled.div`
 export const ArrivalInfo = styled.div`
   font-size: 14px;
   color: #999;
+`;
+
+export const BackButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-right: 10px;
 `;
