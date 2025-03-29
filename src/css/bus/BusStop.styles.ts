@@ -2,8 +2,8 @@ import styled from "styled-components";
 import {Link} from "react-router-dom";
 
 export const StyledLink = styled(Link)`
-    text-decoration: none;  // 밑줄 제거
-    color: inherit;  // 부모 색상 상속
+    text-decoration: none;  
+    color: inherit; 
 `;
 
 export const Wrapper = styled.div`
@@ -20,16 +20,10 @@ export const BusStopInfo = styled.div`
     border-bottom: 1px solid #ddd;
 
     a {
-        text-decoration: none;  // 🚀 링크 밑줄 제거
-        color: inherit;  // 부모의 텍스트 색상으로 사용
-        display: block;  // 전체 영역을 클릭할 수 있도록
+        text-decoration: none; 
+        color: inherit;  
+        display: block; 
     }
-    //
-    // &:hover {
-    //     a {
-    //         color: ${(props) => props.theme.accentColor};  // hover 시 색상 변경
-    //     }
-    // }
 `;
 
 export const BusStopBottomRow = styled.div`

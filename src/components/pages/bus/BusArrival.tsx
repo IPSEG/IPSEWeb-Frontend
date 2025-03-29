@@ -37,8 +37,6 @@ function BusArrival() {
         }
     )
 
-    // busArrivalData가 로드되었을 때만 useQueries를 호출하도록 변경
-
     const memoizedQueries = useMemo(() => {
         if (!busArrivalData) return [];
 
@@ -46,7 +44,7 @@ function BusArrival() {
             queryKey: ["busRouteBasicInfo", cityCode, busArrival.route_id], // cityCode 포함
             queryFn: () =>
                 fetchBusRouteBasicInfoByCityCodeAndRouteId(cityCode, busArrival.route_id),
-            staleTime: 1000 * 60 * 5, // 5분간 fresh 상태
+            staleTime: 1000 * 60 * 5,
         }));
     }, [busArrivalData, cityCode]);
 
@@ -60,17 +58,11 @@ function BusArrival() {
         .map(query => query.data)
         .filter((data): data is BusRouteBasicInfo => data !== undefined);
 
-    useEffect(() => {
-        // console.log("busRouteBasicInfo updated : ", busRouteBasicInfo)
-    }, [busRouteBasicInfo])
-
     const busArrivalMap = useMemo(() => {
         if (!busArrivalData) return new Map<number, BusArrivalData>();
 
         const newMap = new Map<number, BusArrivalData>();
         busArrivalData.forEach((bus) => newMap.set(bus.route_no, bus));
-
-        // console.log(newMap);
 
         return newMap;
     }, [busArrivalData]);
@@ -88,12 +80,10 @@ function BusArrival() {
 
 
             <Divider/>
-            {/*도착 예정 버스 정보를 보여준다. 우선 routeNo만 보여줘볼까 : 완료*/}
-            {/*리스트를 좀더 고급지게 만들어봐야겠군 : 진행중..*/}
             <div>
                 {isLoadingBusRouteBasicInfo || isLoadingBusArrival || busArrivalMap.size === 0 ? (
                     <p>Loading more...</p>
-                ) : busRouteBasicInfo.length === 0 ? ( // 배열이 비어 있으면
+                ) : busRouteBasicInfo.length === 0 ? (
                         <p>No data available.</p>
                     ) :
                     (

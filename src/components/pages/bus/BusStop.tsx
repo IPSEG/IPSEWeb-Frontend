@@ -104,11 +104,8 @@ function BusStop() {
                 ))
             )
             }
-
-            {/* 로딩 중일 때 표시 */}
             {isFetchingNextPage && <p>Loading more...</p>}
 
-            {/* 마지막 요소 (Intersection Observer 대상) */}
             <div ref={observerRef} style={{height: "10px"}}/>
 
         </Wrapper>

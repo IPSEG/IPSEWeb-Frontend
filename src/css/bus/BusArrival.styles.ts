@@ -52,11 +52,10 @@ export const Divider = styled.div`
   background-color: #E0E0E0;
 `;
 
-//
 export const BusListContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px; /* 아이템 간 간격 */
+  gap: 10px;
   padding: 15px;
 `;
 
@@ -73,7 +72,7 @@ export const BusInfoContainer = styled.div`
 export const BusNumber = styled.span`
   font-size: 18px;
   font-weight: bold;
-  color: #2d6a4f; /* 초록색 계열 */
+  color: #2d6a4f; 
 `;
 
 export const RegionTag = styled.span`
@@ -84,13 +83,12 @@ export const RegionTag = styled.span`
 
 export const BusTypeTag = styled.span<{ isExpress: boolean }>`
     background-color: ${(props) => (props.isExpress ? "#ff4d4d" : "#ffcc00")};
-    /* 급행이면 빨간색(#ff4d4d), 아니면 노란색(#ffcc00) */
-    color: #fff; /* 흰색 글씨 */
+    color: #fff;
     font-size: 12px;
     font-weight: bold;
     padding: 3px 6px;
     border-radius: 8px;
-    margin-left: 6px; /* RegionTag와 간격 조정 */
+    margin-left: 6px;
     display: inline-block;
     min-width: 40px;
     text-align: center;
