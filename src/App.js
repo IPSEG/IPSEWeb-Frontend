@@ -9,6 +9,7 @@ import AuthCheck from './components/utils/AuthCheck';
 import SignUp from './components/pages/SignUp';
 import './css/App.css';
 import BusStop from "./components/pages/bus/BusStop.tsx";
+import BusArrival from "./components/pages/bus/BusArrival.tsx";
 
 const App = () => {
     return (
@@ -32,12 +33,18 @@ const App = () => {
                                         <Route path="/Stock" element={<Stock />} />
                                         <Route path="/Weather" element={<Weather />} />
                                         <Route path="/busstop" element={<BusStop />}/>
+                                        <Route path="/busstop/:cityCode/:busStopId"  element={<BusArrival/>}/>
                                     </Routes>
                                 </div>
                             </div>
                         </AuthCheck>
                     }
                 />
+                {/*<Route path="/Traffic" element={<Traffic />} />*/}
+                {/*<Route path="/Stock" element={<Stock />} />*/}
+                {/*<Route path="/Weather" element={<Weather />} />*/}
+                {/*<Route path="/busstop" element={<BusStop />}/>*/}
+                {/*<Route path="/busstop/:cityCode/:busStopId"  element={<BusArrival/>}/>*/}
             </Routes>
         </Router>
     );

@@ -1,6 +1,10 @@
 import styled from "styled-components";
+import {Link} from "react-router-dom";
 
-
+export const StyledLink = styled(Link)`
+    text-decoration: none;  
+    color: inherit; 
+`;
 
 export const Wrapper = styled.div`
     background-color: ${(props) => props.theme.boardColor};
@@ -14,6 +18,12 @@ export const Wrapper = styled.div`
 export const BusStopInfo = styled.div`
     padding: 10px;
     border-bottom: 1px solid #ddd;
+
+    a {
+        text-decoration: none; 
+        color: inherit;  
+        display: block; 
+    }
 `;
 
 export const BusStopBottomRow = styled.div`

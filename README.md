@@ -73,9 +73,9 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ```
 npm i styled-components 
-npm i react-hook-useForm
+npm i react-hook-form
 npm i recoil
-npm i react-query
+npm i @tanstack/react-query
 ```
 
 
