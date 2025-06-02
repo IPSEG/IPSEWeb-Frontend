@@ -76,6 +76,7 @@ npm i styled-components
 npm i react-hook-form
 npm i recoil
 npm i @tanstack/react-query
+npm install -D tailwindcss postcss autoprefixer
 ```
 
 

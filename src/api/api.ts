@@ -1,9 +1,9 @@
 const BASE_URL = `http://localhost`;
-const WEB_PORT = `8080`;
+const WEB_PORT = `8081`;
 const BASE_TRAFFIC_VERSION_1 = `api/v1/traffic`;
 
 const TEST_URL = `https://my-json-server.typicode.com/IPSEG/IPSEWeb-Frontend-DB`;
-const TEST: boolean = false;
+const TEST: boolean = true;
 
 async function fetchData(url: string) {
     try {
