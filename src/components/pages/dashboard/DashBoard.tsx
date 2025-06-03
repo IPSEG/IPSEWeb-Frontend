@@ -11,44 +11,13 @@ import {
     TextGroup
 } from "../../../css/dashboard/DashBoard.styles.ts";
 // @ts-ignore
-import {ICardGroup, ICardItem} from "../../../type/dashboard/DashBoard.ts";
+import {BusCardItem, ICardGroup, ICardItem, SubwayCardItem} from "../../../type/dashboard/DashBoard.ts";
 // @ts-ignore
 import {fetchCardGroupList} from "../../../api/dashboard/DashBoardApi.ts";
 
 const getEmoji = (type: ICardItem['cardType']) => {
     return type === 'BUS' ? '🚌' : '🚇';
 };
-
-const cardGroups: ICardGroup[] = [
-    {
-        id: 1,
-        name: '출근용',
-        cards: [
-            {
-                id: 1,
-                cardType: 'BUS',
-                name: '신덕1리 정류장'
-            },
-            {
-                id: 2,
-                cardType: 'SUBWAY',
-                name: '강남역'
-            },
-        ]
-    },
-    {
-        id: 2,
-        name: '퇴근용',
-        cards: [
-            {
-                id: 3,
-                cardType: 'BUS',
-                name: '판교테크노밸리',
-            }
-        ]
-    }
-]
-
 
 function DashBoard() {
 
@@ -68,13 +37,20 @@ function DashBoard() {
                         <span>🔑</span>
                         {group.name}
                     </CardGroupTitle>
-                    {group.cards.map( (card, idx) => (
-                        <CardBox key={idx}>
+                    {group.cards.map( (card) => (
+                        <CardBox key={card.cardId}>
                             <TextGroup>
                                 <Emoji>{getEmoji(card.cardType)}</Emoji>
                                 <div>
-                                    <DashBoardTitle>{card.name}</DashBoardTitle>
-                                    <DashBoardDescription>{card.cardType === 'BUS' ? '버스 카드' : '지하철 카드 '}</DashBoardDescription>
+                                    <DashBoardTitle>{card.cardName}</DashBoardTitle>
+                                    {card.cardType === 'BUS' ? (
+                                     <>
+                                         <DashBoardDescription>정류장: {(card as BusCardItem).busStopName}</DashBoardDescription>
+                                         <DashBoardDescription>지역: {(card as BusCardItem).detailCity || '정보 없음'}</DashBoardDescription>
+                                     </>
+                                    ) : (
+                                        <DashBoardDescription>지하철 역: {(card as SubwayCardItem).stationName}</DashBoardDescription>
+                                    )}
                                 </div>
                             </TextGroup>
                             <RightArrow>{'>'}</RightArrow>
