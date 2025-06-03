@@ -1,5 +1,6 @@
 // @ts-ignore
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+// @ts-ignore
 import {
     AddCardBox,
     CardBox, CardGroupTitle,
@@ -9,35 +10,40 @@ import {
     Emoji, RightArrow,
     TextGroup
 } from "../../../css/dashboard/DashBoard.styles.ts";
-import {ICardGroup, ICardItem} from "../../../type/dashboard/DashBoard";
+// @ts-ignore
+import {ICardGroup, ICardItem} from "../../../type/dashboard/DashBoard.ts";
+// @ts-ignore
+import {fetchCardGroupList} from "../../../api/dashboard/DashBoardApi.ts";
 
-const getEmoji = (type: ICardItem['type']) => {
+const getEmoji = (type: ICardItem['cardType']) => {
     return type === 'BUS' ? '🚌' : '🚇';
 };
 
 const cardGroups: ICardGroup[] = [
     {
+        id: 1,
         name: '출근용',
         cards: [
             {
-                type: 'BUS',
-                title: '신덕1리 정류장',
-                description: '222번 버스 · 5분 후 도착',
+                id: 1,
+                cardType: 'BUS',
+                name: '신덕1리 정류장'
             },
             {
-                type: 'SUBWAY',
-                title: '강남역',
-                description: '2호선 · 1분 후 도착',
+                id: 2,
+                cardType: 'SUBWAY',
+                name: '강남역'
             },
         ]
     },
     {
+        id: 2,
         name: '퇴근용',
         cards: [
             {
-                type: 'BUS',
-                title: '판교테크노밸리',
-                description: '1007번 · 5분 후 도착',
+                id: 3,
+                cardType: 'BUS',
+                name: '판교테크노밸리',
             }
         ]
     }
@@ -45,6 +51,15 @@ const cardGroups: ICardGroup[] = [
 
 
 function DashBoard() {
+
+    const [cardGroups, setCardGroups] = useState<ICardGroup[]>([]);
+
+    useEffect(() => {
+        fetchCardGroupList().then((data) =>{
+            setCardGroups(data);
+        });
+    }, []);
+
     return (
         <DashBoardWrapper>
             {cardGroups.map((group) => (
@@ -56,10 +71,10 @@ function DashBoard() {
                     {group.cards.map( (card, idx) => (
                         <CardBox key={idx}>
                             <TextGroup>
-                                <Emoji>{getEmoji(card.type)}</Emoji>
+                                <Emoji>{getEmoji(card.cardType)}</Emoji>
                                 <div>
-                                    <DashBoardTitle>{card.title}</DashBoardTitle>
-                                    <DashBoardDescription>{card.description}</DashBoardDescription>
+                                    <DashBoardTitle>{card.name}</DashBoardTitle>
+                                    <DashBoardDescription>{card.cardType === 'BUS' ? '버스 카드' : '지하철 카드 '}</DashBoardDescription>
                                 </div>
                             </TextGroup>
                             <RightArrow>{'>'}</RightArrow>

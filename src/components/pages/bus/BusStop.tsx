@@ -2,7 +2,7 @@
 import {useForm, useWatch} from "react-hook-form";
 
 // @ts-ignore
-import {fetchBusStopListByNameOrId} from "../../../api/api.ts";
+import {fetchBusStopListByNameOrId} from "../../../api/bus/BusApi.ts";
 // @ts-ignore
 import React, {useEffect, useMemo, useRef} from "react";
 // @ts-ignore
