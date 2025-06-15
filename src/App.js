@@ -10,6 +10,7 @@ import SignUp from './components/pages/SignUp';
 import './css/App.css';
 import BusStop from "./components/pages/bus/BusStop.tsx";
 import BusArrival from "./components/pages/bus/BusArrival.tsx";
+import DashBoard from "./components/pages/dashboard/DashBoard.tsx";
 
 const App = () => {
     return (
@@ -34,6 +35,7 @@ const App = () => {
                                         <Route path="/Weather" element={<Weather />} />
                                         <Route path="/busstop" element={<BusStop />}/>
                                         <Route path="/busstop/:cityCode/:busStopId"  element={<BusArrival/>}/>
+                                        <Route path="/dashboard"  element={<DashBoard/>}/>
                                     </Routes>
                                 </div>
                             </div>
@@ -45,6 +47,7 @@ const App = () => {
                 {/*<Route path="/Weather" element={<Weather />} />*/}
                 {/*<Route path="/busstop" element={<BusStop />}/>*/}
                 {/*<Route path="/busstop/:cityCode/:busStopId"  element={<BusArrival/>}/>*/}
+                {/*<Route path="/dashboard" element={<DashBoard />}/>*/}
             </Routes>
         </Router>
     );

@@ -3,7 +3,7 @@ import {useLocation, useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useMemo, useState} from "react";
 
 // @ts-ignore
-import {fetchBusArriveInfoByBusStopId, fetchBusRouteBasicInfoByCityCodeAndRouteId} from "../../../api/api.ts";
+import {fetchBusArriveInfoByBusStopId, fetchBusRouteBasicInfoByCityCodeAndRouteId} from "../../../api/bus/BusApi.ts";
 // @ts-ignore
 import {
     ArrivalInfo, BackButton,
